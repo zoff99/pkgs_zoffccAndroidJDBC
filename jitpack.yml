@@ -1,0 +1,10 @@
+
+
+install:
+   - echo "installing ..."
+   - pwd
+   - id -a
+   - ls -al
+   - unzip local_maven_androidjdbc_1.0.1.zip
+   - mv -v .m2 ~/
+
