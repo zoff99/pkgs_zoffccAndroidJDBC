@@ -33,6 +33,21 @@ echo $next_m_version
 sed -i -e 's#unzip local_maven_androidjdbc_.*$#unzip local_maven_androidjdbc_'"$next_m_version"'.zip#' "$f1"
 sed -i -e 's#.version..*./version.#<version>'"$next_m_version"'</version>#' "$f2"
 
+# generate checksum file and add and commit it
+cd "$basedir"/
+checksum_file="pkgs_zoffccAndroidJDBC-""$next_m_version"".aar.sha256"
+tmp_dir="unpack_temp_$$"
+rm -Rf "$tmp_dir"/
+mkdir -p "$tmp_dir"/
+cd "$tmp_dir"/ && unzip ../local_maven_androidjdbc_"$next_m_version".zip
+cd .m2/repository/com/zoffcc/applications/androidjdbc/AndroidJDBC/"$next_m_version"/
+sha256sum AndroidJDBC-"$next_m_version".aar
+sha256sum AndroidJDBC-"$next_m_version".aar > "$basedir"/"$checksum_file"
+cd "$basedir"/
+rm -Rf "$tmp_dir"/
+
+git add "$basedir"/"$checksum_file"
+
 commit_message="$next_m_version"
 tag_name="$next_m_version"
 
